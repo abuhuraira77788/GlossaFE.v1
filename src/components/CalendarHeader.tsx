@@ -84,7 +84,7 @@ const CalendarHeader: React.FC = () => {
             className="h-10 px-3 border-purple-300 text-gray-800"
           >
             <ChevronLeft className="h-5 w-5 text-purple-500" />
-            <ChevronLeft className="h-5 w-5 -ml-2 text-purple-500" />
+            <ChevronLeft className="h-5 w-5 -ml-3 text-purple-500" />
             Week
           </Button>
           <Button

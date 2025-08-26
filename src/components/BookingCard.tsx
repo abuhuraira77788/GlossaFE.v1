@@ -1,6 +1,6 @@
 import React from "react";
 import { Booking } from "../types/booking";
-import { CheckCircle2 } from "lucide-react";
+import { Check } from "lucide-react";
 
 interface BookingCardProps {
   booking: Booking;
@@ -21,28 +21,30 @@ const BookingCard: React.FC<BookingCardProps> = ({ booking, style }) => {
 
   const timeRange = `${formatTime(booking.start)} - ${formatTime(booking.end)}`;
 
-  // staff → background pastel
+  // exact HEX background colors per staff
   const staffColors: Record<string, string> = {
-    ava: "bg-purple-300",
-    jenny: "bg-teal-300",
-    katie: "bg-pink-300",
-    amelie: "bg-indigo-300",
+    ava: "#DDC4FA",
+    jenny: "#83DCE0",
+    katie: "#F3B9EC",
+    amelie: "#ADAAEF",
   };
 
-  const bgClass = staffColors[booking.staff.toLowerCase()] || "bg-purple-300";
+  const bgColor = staffColors[booking.staff.toLowerCase()] || "#DDC4FA";
 
   return (
     <div
-      className={`absolute rounded-lg p-3 shadow-sm text-sm ${bgClass}`}
-      style={style}
+      className="absolute rounded-lg p-3 shadow-sm text-sm"
+      style={{ backgroundColor: bgColor, ...style }}
     >
       <div className="font-semibold text-gray-900">{booking.service}</div>
       <div className="text-gray-800 text-xs">{booking.client}</div>
       <div className="text-gray-700 text-xs">{timeRange}</div>
 
       {booking.status === "paid" && (
-        <div className="absolute bottom-1 right-2 flex items-center gap-1 text-[11px] font-medium text-gray-800">
-          <CheckCircle2 className="h-3.5 w-3.5 text-white bg-gray-800 rounded-full p-[1px]" />
+        <div className="absolute bottom-1 right-2 flex items-center gap-1 text-[11px] font-bold text-white">
+          <div className="flex items-center justify-center w-4 h-4 rounded-full border border-white">
+            <Check className="h-3 w-3 text-white" strokeWidth={3} />
+          </div>
           PAID
         </div>
       )}
