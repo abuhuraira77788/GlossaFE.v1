@@ -20,7 +20,7 @@ const AppRoutes = () => {
         <Sidebar />
         <div className="flex flex-col flex-1">
           <Navbar />
-          <div className="p-6 flex-1 overflow-y-auto">
+          <div className="flex-1 bg-gray-100 p-6 overflow-y-auto">
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/dashboard" element={<Dashboard />} />

@@ -24,8 +24,11 @@ const SelectTrigger = React.forwardRef<
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      {/* <-- Purple only for arrow */}
-      <ChevronDown className="h-4 w-4 text-purple-500" />
+      <ChevronDown
+        className="h-4 w-4"
+        style={{ color: "#885ABB" }}
+        strokeWidth={4}
+      />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ));

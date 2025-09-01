@@ -8,8 +8,8 @@ const Navbar = () => {
   const notificationCount = 3;
 
   return (
-    <nav className="px-4 py-3 shadow-lg" style={{ backgroundColor: "#402b69" }}>
-      <div className="flex items-center justify-between max-w-7xl mx-auto">
+    <nav className="px-6 py-3 shadow-lg" style={{ backgroundColor: "#402b69" }}>
+      <div className="flex items-center justify-between w-full">
         {/* Logo */}
         <div className="flex items-center">
           <img
@@ -19,9 +19,9 @@ const Navbar = () => {
           />
         </div>
 
-        <div className="flex items-center space-x-4 ml-auto">
+        <div className="flex items-center space-x-4">
           {/* Search Bar */}
-          <div className="relative w-96 ml-auto">
+          <div className="relative w-80 ml-auto">
             <Input
               type="text"
               placeholder="bookings, customers, or products"
@@ -35,6 +35,7 @@ const Navbar = () => {
             />
           </div>
 
+          {/* Notifications */}
           <div className="relative">
             <Button
               variant="ghost"
@@ -50,6 +51,7 @@ const Navbar = () => {
             </Button>
           </div>
 
+          {/* Home Button */}
           <Button
             variant="ghost"
             size="icon"
@@ -58,6 +60,7 @@ const Navbar = () => {
             <Home className="w-5 h-5" />
           </Button>
 
+          {/* User Menu */}
           <Button
             variant="ghost"
             className="text-white hover:bg-white/10 border border-white/40 rounded-md w-auto px-3 h-10 flex items-center justify-center"

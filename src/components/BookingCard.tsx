@@ -36,8 +36,8 @@ const BookingCard: React.FC<BookingCardProps> = ({ booking, style }) => {
       className="absolute rounded-lg p-3 shadow-sm text-sm"
       style={{ backgroundColor: bgColor, ...style }}
     >
-      <div className="font-semibold text-gray-900">{booking.service}</div>
-      <div className="text-gray-800 text-xs">{booking.client}</div>
+      <div className="font-semibold text-gray-900 mb-14">{booking.service}</div>
+      <div className="text-gray-800 text-xs mb-1">{booking.client}</div>
       <div className="text-gray-700 text-xs">{timeRange}</div>
 
       {booking.status === "paid" && (

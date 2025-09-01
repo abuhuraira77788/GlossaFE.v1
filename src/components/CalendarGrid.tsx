@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import BookingCard from "./BookingCard";
 import { Booking } from "../types/booking";
+import AppointmentSidebar from "./AppointmentSidebar"; // new sidebar
+import { sampleServices } from "../data/appointments";
 
 interface CalendarGridProps {
   bookings: Booking[];
 }
 
 const CalendarGrid: React.FC<CalendarGridProps> = ({ bookings }) => {
+  const [selectedSlot, setSelectedSlot] = useState<{
+    time: string;
+    staff: string;
+  } | null>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   const timeSlots = [
     "9 AM",
     "10 AM",
@@ -25,6 +33,9 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({ bookings }) => {
     { name: "Amelie", color: "#837EED" },
   ];
 
+  // each hour row = 100px
+  const rowHeight = 100;
+
   const getBookingPosition = (booking: Booking) => {
     const startHour = new Date(booking.start).getHours();
     const startMinute = new Date(booking.start).getMinutes();
@@ -35,8 +46,8 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({ bookings }) => {
     const endFromNine = (endHour - 9) * 60 + endMinute;
     const duration = endFromNine - startFromNine;
 
-    const top = (startFromNine * 80) / 60;
-    const height = (duration * 80) / 60;
+    const top = (startFromNine * rowHeight) / 60;
+    const height = (duration * rowHeight) / 60;
 
     return { top: `${top}px`, height: `${height}px` };
   };
@@ -50,6 +61,11 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({ bookings }) => {
       minute: "2-digit",
       hour12: true,
     });
+  };
+
+  const handleSlotClick = (hour: number, minute: number, staffName: string) => {
+    setSelectedSlot({ time: formatTime(hour, minute), staff: staffName });
+    setIsSidebarOpen(true);
   };
 
   return (
@@ -75,15 +91,15 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({ bookings }) => {
           {timeSlots.map((time) => (
             <div
               key={time}
-              className="h-20 border-b border-gray-200 flex items-start justify-end pr-3 pt-1"
+              className="h-[100px] border-b border-gray-200 flex items-start justify-end pr-3 pt-1"
             >
-              <span className="text-xs text-gray-500">{time}</span>
+              <span className="text-sm text-gray-500">{time}</span>
             </div>
           ))}
         </div>
 
         {/* Staff columns */}
-        {staff.map((staffMember, idx) => (
+        {staff.map((staffMember) => (
           <div
             key={staffMember.name}
             className="relative border-r border-gray-200 last:border-r-0"
@@ -92,12 +108,15 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({ bookings }) => {
               const baseHour = 9 + hourIdx;
               return (
                 <React.Fragment key={hourIdx}>
-                  {/* First half-hour */}
-                  <div className="relative h-10 border-b border-gray-200 grid grid-rows-2">
+                  {/* First half-hour (0–30 min) */}
+                  <div className="relative h-[50px] border-b border-gray-200 grid grid-rows-2">
                     {[0, 15].map((m) => (
                       <div
                         key={m}
                         className="relative group hover:bg-purple-50 transition cursor-pointer flex items-center justify-center"
+                        onClick={() =>
+                          handleSlotClick(baseHour, m, staffMember.name)
+                        }
                       >
                         <span className="text-[11px] text-black opacity-0 group-hover:opacity-100">
                           {formatTime(baseHour, m)}
@@ -105,12 +124,16 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({ bookings }) => {
                       </div>
                     ))}
                   </div>
-                  {/* Second half-hour */}
-                  <div className="relative h-10 border-b border-gray-200 grid grid-rows-2">
+
+                  {/* Second half-hour (30–60 min) */}
+                  <div className="relative h-[50px] border-b border-gray-200 grid grid-rows-2">
                     {[30, 45].map((m) => (
                       <div
                         key={m}
                         className="relative group hover:bg-purple-50 transition cursor-pointer flex items-center justify-center"
+                        onClick={() =>
+                          handleSlotClick(baseHour, m, staffMember.name)
+                        }
                       >
                         <span className="text-[11px] text-black opacity-0 group-hover:opacity-100">
                           {formatTime(baseHour, m)}
@@ -139,6 +162,14 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({ bookings }) => {
           </div>
         ))}
       </div>
+
+      <AppointmentSidebar
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+        stylist={selectedSlot?.staff || ""}
+        appointmentTime={selectedSlot?.time || ""}
+        services={sampleServices}
+      />
     </div>
   );
 };

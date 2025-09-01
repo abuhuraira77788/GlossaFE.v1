@@ -74,11 +74,8 @@ const Sidebar: React.FC = () => {
   );
 
   return (
-    <div className="w-64 h-screen bg-white p-4 border-r border-gray-200 flex flex-col justify-between">
-      {/* Top section */}
+    <div className="w-56 h-screen bg-white p-4 flex flex-col justify-between">
       <nav className="space-y-2">{mainItems.map(renderNavLink)}</nav>
-
-      {/* Footer (Settings) */}
       <div className="mt-auto">{renderNavLink(footerItem)}</div>
     </div>
   );

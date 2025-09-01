@@ -14,8 +14,8 @@ export const mockBookings: Booking[] = [
     staff: "Ava",
     service: "Root Touch-Up",
     client: "Debbie Smith",
-    start: "2025-06-30T09:30:00",
-    end: "2025-06-30T10:30:00",
+    start: "2025-06-30T12:00:00",
+    end: "2025-06-30T13:30:00",
     status: "unpaid",
   },
   {
@@ -24,7 +24,7 @@ export const mockBookings: Booking[] = [
     service: "Root Touch-Up",
     client: "Debbie Smith",
     start: "2025-06-30T12:30:00",
-    end: "2025-06-30T13:30:00",
+    end: "2025-06-30T14:00:00",
     status: "unpaid",
   },
   {
@@ -33,7 +33,7 @@ export const mockBookings: Booking[] = [
     service: "Hair Cut",
     client: "Karen Davies",
     start: "2025-06-30T11:00:00",
-    end: "2025-06-30T12:15:00",
+    end: "2025-06-30T12:30:00",
     status: "paid",
   },
   {
@@ -42,7 +42,7 @@ export const mockBookings: Booking[] = [
     service: "Root Touch-Up",
     client: "Debbie Smith",
     start: "2025-06-30T09:30:00",
-    end: "2025-06-30T10:30:00",
+    end: "2025-06-30T11:00:00",
     status: "unpaid",
   },
 ];
