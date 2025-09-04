@@ -1,7 +1,20 @@
-import React from "react";
-import { Search, Zap, ChevronDown } from "lucide-react";
+import React, { useState } from "react";
+import { Search, Pencil, Trash2, ChevronDown } from "lucide-react";
+import SelectStylistModal from "../components/StylistsModal";
+import QuickPaymentPanel from "../components/QuickPaymentPanel";
+import PosPaymentStep from "../components/PosPaymentStep";
 
 const POS = () => {
+  const [showStylistModal, setShowStylistModal] = useState(false);
+  const [selectedStylist, setSelectedStylist] = useState<string>("");
+  const [selectedStylistId, setSelectedStylistId] = useState<number | null>(
+    null
+  );
+  const [showQuickPaymentPanel, setShowQuickPaymentPanel] = useState(false);
+  const [sidebarMode, setSidebarMode] = useState<"quick" | "paynow" | null>(
+    null
+  );
+
   const products = [
     { id: 1, name: "Wax", price: null, bg: "bg-[#40C4E7]", large: true },
     { id: 2, name: "Shampoo", price: null, bg: "bg-[#4CCFC1]", large: true },
@@ -10,7 +23,7 @@ const POS = () => {
       id: 4,
       name: "Hair Wax",
       price: "£35.50",
-      bg: "bg-black",
+      bg: "bg-gradient-to-b from-white to-black",
       large: true,
       hasImage: true,
     },
@@ -18,7 +31,7 @@ const POS = () => {
       id: 5,
       name: "Hair Wax",
       price: "£35.50",
-      bg: "bg-black",
+      bg: "bg-gradient-to-b from-white to-black",
       large: false,
       hasImage: true,
     },
@@ -74,9 +87,8 @@ const POS = () => {
 
   return (
     <>
-      {/* Search + Quick Payment (FULL WIDTH) */}
       <div className="flex items-center gap-3 mb-6">
-        <div className="relative flex-1">
+        <div className="relative flex-[0.85]">
           <input
             type="text"
             placeholder="Search"
@@ -84,14 +96,18 @@ const POS = () => {
           />
           <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#885ABB]" />
         </div>
-        <button className="bg-[#22C55E] hover:bg-[#16a34a] text-white rounded-md px-5 py-3 font-semibold flex items-center gap-2 transition">
-          <Zap className="w-4 h-4" />
+        <button
+          onClick={() => setSidebarMode("quick")}
+          className="flex-[0.15] bg-[#22C55E] hover:bg-[#16a34a] text-white rounded-lg py-3 font-bold flex items-center justify-center gap-2 transition"
+        >
+          <img src="/quick.svg" alt="Quick Payment" className="w-5 h-5" />
           Quick Payment
         </button>
       </div>
+
       <div className="min-h-screen bg-[#F9F9F9] p-6">
         {/* Main Grid */}
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-3 gap-6 items-stretch min-h-screen">
           {/* Left Section - Products */}
           <div className="col-span-2">
             <div className="grid grid-cols-4 gap-4">
@@ -109,25 +125,37 @@ const POS = () => {
                   >
                     {isHighlighted ? (
                       <div className="flex h-full items-center justify-center text-center">
-                        <h3 className="text-[24px] font-bold">{p.name}</h3>
+                        <h3 className="text-[22px] font-bold">{p.name}</h3>
                       </div>
                     ) : isImageBox ? (
-                      <div className="flex flex-col h-full">
-                        <div className="flex-1 bg-gradient-to-b from-white/80 to-transparent rounded" />
-                        <div className="mt-auto">
-                          <h3 className="text-[16px] font-semibold">
-                            {p.name}
-                          </h3>
+                      <div className="relative h-full w-full rounded-md overflow-hidden">
+                        {" "}
+                        {/* Product image */}{" "}
+                        <img
+                          src="/hair-wax.png"
+                          alt={p.name}
+                          className="h-full w-full object-cover transform -translate-y-14"
+                        />{" "}
+                        {/* Gradient overlay */}{" "}
+                        <div className="absolute -bottom-4 -left-2 right-0  from-black/90 to-black/20 p-3">
+                          {" "}
+                          <h3 className="text-[18px] font-bold text-white">
+                            {" "}
+                            {p.name}{" "}
+                          </h3>{" "}
                           {p.price && (
-                            <p className="text-[15px] font-bold">{p.price}</p>
-                          )}
-                        </div>
+                            <p className="text-[16px] font-bold text-white">
+                              {" "}
+                              {p.price}{" "}
+                            </p>
+                          )}{" "}
+                        </div>{" "}
                       </div>
                     ) : (
                       <div className="flex flex-col justify-between h-full">
-                        <h3 className="text-[16px] font-semibold">{p.name}</h3>
+                        <h3 className="text-[18px] font-semibold">{p.name}</h3>
                         {p.price && (
-                          <p className="text-[15px] font-bold">{p.price}</p>
+                          <p className="text-[16px] font-bold">{p.price}</p>
                         )}
                       </div>
                     )}
@@ -138,17 +166,25 @@ const POS = () => {
           </div>
 
           {/* Right Section - Cart */}
-          <div className="bg-white border border-[#E5E0EB] rounded-md p-6">
+          <div className="bg-white border border-[#E5E0EB] rounded-md p-6 flex flex-col h-full">
             {/* Stylist Dropdown */}
-            <div className="mb-6">
-              <label className="block text-[16px] font-medium text-[#402B69] mb-2">
+            <div className="flex items-center justify-between border-b border-[#E5E0EB] pb-4 mb-6">
+              <label className="text-[16px] font-medium text-[#402B69]">
                 Stylist
               </label>
-              <div className="relative">
-                <select className="w-full border border-[#E5E0EB] rounded-md py-3 px-4 text-[#402B69] text-[15px] font-medium appearance-none focus:outline-none">
-                  <option>Choose Stylist</option>
-                </select>
-                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#885ABB]" />
+              <div
+                onClick={() => setShowStylistModal(true)}
+                className="relative flex-1 ml-4 cursor-pointer"
+              >
+                <div className="w-full border border-[#ab7de0] rounded-md py-2.5 px-4 text-[#402B69] text-[15px] font-medium flex items-center justify-between">
+                  {selectedStylist || "Choose Stylist"}
+                  <ChevronDown
+                    strokeWidth={4}
+                    className={`w-5 h-5 text-[#885ABB] transition-transform ${
+                      showStylistModal ? "rotate-180" : ""
+                    }`}
+                  />
+                </div>
               </div>
             </div>
 
@@ -157,42 +193,98 @@ const POS = () => {
               {appointmentItems.map((item, i) => (
                 <div
                   key={i}
-                  className="flex justify-between items-center border-b border-[#E5E0EB] pb-2"
+                  className="group flex items-center justify-between border-b border-[#E5E0EB] pb-2"
                 >
-                  <div>
+                  {/* Left side: product + name */}
+                  <div className="flex items-center gap-4">
                     <span className="text-[14px] text-[#402B69]">
                       {item.label}
                     </span>
-                    <p className="text-[15px] font-semibold text-[#402B69]">
+                    <span className="text-[15px] font-bold text-[#402B69]">
                       {item.value}
-                    </p>
+                    </span>
                   </div>
-                  <span className="text-[15px] font-bold text-[#402B69]">
+
+                  <span className="text-[15px] font-semibold text-[#402B69] group-hover:hidden">
                     {item.price}
                   </span>
+
+                  <div className="hidden group-hover:flex items-center gap-3 text-[#885ABB]">
+                    <button className="hover:text-[#6f3fa8]">
+                      <Pencil className="w-5 h-5" />
+                    </button>
+                    <button className="hover:text-red-600">
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
 
-            {/* Total */}
-            <div className="flex justify-between items-center border-t border-[#E5E0EB] pt-4 mb-6">
-              <span className="text-[16px] font-semibold text-[#402B69]">
-                Due
-              </span>
-              <span className="text-[18px] font-bold text-[#402B69]">£105</span>
-            </div>
+            {/* Spacer to push footer down */}
+            <div className="flex-grow" />
 
-            {/* Buttons */}
-            <div className="space-y-3">
-              <button className="w-full bg-[#EADDF7] text-[#885ABB] rounded-md py-3 font-semibold hover:bg-[#d9c7f2] transition">
-                Add to Appointment
-              </button>
-              <button className="w-full bg-[#22C55E] text-white rounded-md py-3 font-semibold hover:bg-[#16a34a] transition">
-                PAY NOW
-              </button>
+            {/* Total + Buttons (footer) */}
+            <div>
+              <div className="flex justify-between items-center border-t border-b pb-3 border-[#E5E0EB] pt-4 mb-6">
+                <span className="text-[28px] font-normal text-[#402B69]">
+                  Due
+                </span>
+                <span className="text-[28px] font-normal text-[#402B69]">
+                  £105
+                </span>
+              </div>
+
+              <div className="space-y-3">
+                <button className="w-full bg-[#EADDF7] text-[#885ABB] rounded-md py-3 font-semibold hover:bg-[#d9c7f2] transition">
+                  Add to Appointment
+                </button>
+                <button
+                  onClick={() => setSidebarMode("paynow")}
+                  className="w-full bg-[#22C55E] text-white rounded-md py-3 font-extrabold hover:bg-[#16a34a] transition"
+                >
+                  PAY NOW
+                </button>
+              </div>
             </div>
           </div>
         </div>
+        {showStylistModal && (
+          <SelectStylistModal
+            onClose={() => setShowStylistModal(false)}
+            onSelect={(id: number, name: string) => {
+              setSelectedStylistId(id);
+              setSelectedStylist(name);
+              setShowStylistModal(false);
+            }}
+            selectedId={selectedStylistId}
+          />
+        )}
+
+        {showQuickPaymentPanel && (
+          <QuickPaymentPanel onClose={() => setShowQuickPaymentPanel(false)} />
+        )}
+
+        {sidebarMode && (
+          <PosPaymentStep
+            selectedService={{
+              id: "service-1",
+              name: "Hair Cut",
+              duration: "60 mins",
+              price: "£35",
+            }}
+            selectedCustomer="Karen Davies"
+            appointmentTime="9.30–10.30 am"
+            tip={0}
+            setTip={() => {}}
+            goToFinalPayment={() => {
+              // handle finalization
+              setSidebarMode(null);
+            }}
+            onClose={() => setSidebarMode(null)}
+            mode={sidebarMode}
+          />
+        )}
       </div>
     </>
   );

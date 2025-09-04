@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Search, Bell, ChevronDown, Home, User } from "lucide-react";
+import { Search, ChevronDown } from "lucide-react";
 import { Button } from "./ui/Button";
 import { Input } from "./ui/input";
 
@@ -12,11 +12,7 @@ const Navbar = () => {
       <div className="flex items-center justify-between w-full">
         {/* Logo */}
         <div className="flex items-center">
-          <img
-            src="/glossa-white.png"
-            alt="Glossa Logo"
-            className="h-8 w-auto"
-          />
+          <img src="/logo.svg" alt="Glossa Logo" className="h-9 w-auto" />
         </div>
 
         <div className="flex items-center space-x-4">
@@ -42,7 +38,11 @@ const Navbar = () => {
               size="icon"
               className="text-white hover:bg-white/10 relative"
             >
-              <Bell className="w-6 h-6" />
+              <img
+                src="/bars/ring.svg"
+                alt="Notifications"
+                className="w-5 h-5"
+              />
               {notificationCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-green-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold">
                   {notificationCount}
@@ -57,15 +57,15 @@ const Navbar = () => {
             size="icon"
             className="text-white hover:bg-white/10 p-2 border border-white/40 rounded-md w-10 h-10 flex items-center justify-center"
           >
-            <Home className="w-5 h-5" />
+            <img src="/bars/home.svg" alt="Home" className="w-5 h-5" />
           </Button>
 
           {/* User Menu */}
           <Button
             variant="ghost"
-            className="text-white hover:bg-white/10 border border-white/40 rounded-md w-auto px-3 h-10 flex items-center justify-center"
+            className="text-white hover:bg-white/10 border border-white/40 rounded-md w-auto px-3 h-10 flex items-center justify-center "
           >
-            <User className="w-5 h-5" />
+            <img src="/bars/profile.svg" alt="Profile" className="w-5 h-5" />
             <ChevronDown className="w-4 h-4" />
           </Button>
         </div>

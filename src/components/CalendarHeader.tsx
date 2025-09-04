@@ -13,72 +13,71 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../components/ui/select";
-import { ChevronDown } from "lucide-react";
+
+// import your new DateCalendar component
+import DateCalendar from "../components/DateCalendar";
 
 const CalendarHeader: React.FC = () => {
   return (
-    <div className="bg-white border-b border-gray-200 px-2 py-3">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Select defaultValue="all-staff">
-            <SelectTrigger className="w-36 h-9 border-gray-300 focus:ring-2 focus:ring-purple-400 text-[15px] font-normal">
-              <SelectValue placeholder="All Staff" />
-            </SelectTrigger>
-            <SelectContent className="bg-white border border-gray-200 shadow-md rounded-md ">
-              <SelectItem value="all-staff">All Staff</SelectItem>
-              <SelectItem value="ava">Ava</SelectItem>
-              <SelectItem value="jenny">Jenny</SelectItem>
-              <SelectItem value="katie">Katie</SelectItem>
-              <SelectItem value="amelie">Amelie</SelectItem>
-            </SelectContent>
-          </Select>
+    <div>
+      {/* Top header row - white background */}
+      <div className="bg-white border-b border-gray-200 px-0 py-3">
+        <div className="flex items-center justify-between px-2">
+          <div className="flex items-center gap-2">
+            <Select defaultValue="all-staff">
+              <SelectTrigger className="w-36 h-9 border-gray-300 focus:ring-2 focus:ring-purple-400 text-[15px] font-normal">
+                <SelectValue placeholder="All Staff" />
+              </SelectTrigger>
+              <SelectContent className="bg-white border border-gray-200 shadow-md rounded-md ">
+                <SelectItem value="all-staff">All Staff</SelectItem>
+                <SelectItem value="ava">Ava</SelectItem>
+                <SelectItem value="jenny">Jenny</SelectItem>
+                <SelectItem value="katie">Katie</SelectItem>
+                <SelectItem value="amelie">Amelie</SelectItem>
+              </SelectContent>
+            </Select>
 
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-9 border-purple-300 text-purple-500 hover:bg-purple-50"
-          >
-            <SlidersHorizontal
-              className="h-4 w-4"
-              style={{ color: "#885ABB" }}
-              strokeWidth={3}
-            />
-          </Button>
-        </div>
-
-        {/* Center: Date */}
-        <h1 className="text-lg font-semibold">Monday 30th June 2025</h1>
-
-        <div className="flex items-center gap-2">
-          <div className="flex border border-purple-300 rounded-lg overflow-hidden">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-9 px-4 rounded-none text-gray-800 bg-purple-100 text-[16px] font-normal"
-            >
-              Week
-            </Button>
             <Button
               variant="outline"
               size="sm"
-              className="h-9 px-4 rounded-none text-gray-800 text-[16px] font-normal"
+              className="h-9 border-purple-300 text-purple-500 hover:bg-purple-50"
             >
-              Day
+              <SlidersHorizontal
+                className="h-4 w-4"
+                style={{ color: "#885ABB" }}
+                strokeWidth={3}
+              />
             </Button>
           </div>
 
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-9 gap-1 border-purple-300 text-gray-800 text-[16px] font-normal"
-          >
-            <Calendar className="h-4 w-4 text-purple-500" />
-            Date
-          </Button>
+          {/* Center: Date */}
+          <h1 className="text-lg font-semibold">Monday 30th June 2025</h1>
+
+          <div className="flex items-center gap-2">
+            <div className="flex border border-purple-300 rounded-lg overflow-hidden">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-9 px-4 rounded-none text-gray-800 bg-purple-100 text-[16px] font-normal"
+              >
+                Week
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 px-4 rounded-none text-gray-800 text-[16px] font-normal"
+              >
+                Day
+              </Button>
+            </div>
+
+            <DateCalendar />
+          </div>
         </div>
       </div>
 
-      <div className="flex items-center justify-between mt-3">
+      {/* Bottom navigation row - no bg */}
+      <div className="flex items-center justify-between px-2 py-2">
         <div className="flex items-center gap-2">
           {/* Left controls */}
           <Button
