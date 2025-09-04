@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import BookingCard from "./BookingCard";
 import { Booking } from "../types/booking";
-import AppointmentSidebar from "./AppointmentSidebar"; // new sidebar
+import AppointmentSidebar from "./AppointmentSidebar";
 import { sampleServices } from "../data/appointments";
 
 interface CalendarGridProps {
@@ -14,6 +14,10 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({ bookings }) => {
     staff: string;
   } | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState<any | null>(null);
+
+  // new state to track rebooking flow
+  const [rebookMode, setRebookMode] = useState(false);
 
   const timeSlots = [
     "9 AM",
@@ -66,6 +70,7 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({ bookings }) => {
   const handleSlotClick = (hour: number, minute: number, staffName: string) => {
     setSelectedSlot({ time: formatTime(hour, minute), staff: staffName });
     setIsSidebarOpen(true);
+    setRebookMode(false);
   };
 
   return (
@@ -88,6 +93,7 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({ bookings }) => {
       <div className="grid grid-cols-[80px_repeat(4,minmax(140px,1fr))] flex-1">
         {/* Time column */}
         <div className="border-r border-gray-200">
+          <div className="border-b border-gray-200"></div>
           {timeSlots.map((time) => (
             <div
               key={time}
@@ -104,6 +110,7 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({ bookings }) => {
             key={staffMember.name}
             className="relative border-r border-gray-200 last:border-r-0"
           >
+            <div className="border-b border-gray-200"></div>
             {timeSlots.map((_, hourIdx) => {
               const baseHour = 9 + hourIdx;
               return (
@@ -157,18 +164,49 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({ bookings }) => {
                     left: "4px",
                     right: "4px",
                   }}
+                  onClick={() => {
+                    const durationMinutes =
+                      (new Date(b.end).getTime() -
+                        new Date(b.start).getTime()) /
+                      60000;
+
+                    setSelectedBooking({
+                      customer: b.client,
+                      service: {
+                        id: "service-" + b.id,
+                        name: b.service,
+                        duration: `${durationMinutes} min`,
+                        price: b.status === "paid" ? "$0" : "$50",
+                      },
+                      note: "",
+                    });
+                    setIsSidebarOpen(true);
+                    setRebookMode(false);
+                  }}
                 />
               ))}
           </div>
         ))}
       </div>
 
+      {/* Rebook full-width button */}
+      {rebookMode && (
+        <button className="w-full py-4 bg-[#885ABB] text-white font-extrabold rounded-lg mt-2">
+          SELECT A TIME TO REBOOK
+        </button>
+      )}
+
       <AppointmentSidebar
         isOpen={isSidebarOpen}
-        onClose={() => setIsSidebarOpen(false)}
+        onClose={() => {
+          setIsSidebarOpen(false);
+          setSelectedBooking(null);
+        }}
         stylist={selectedSlot?.staff || ""}
         appointmentTime={selectedSlot?.time || ""}
         services={sampleServices}
+        bookingData={selectedBooking}
+        onRebook={() => setRebookMode(true)}
       />
     </div>
   );

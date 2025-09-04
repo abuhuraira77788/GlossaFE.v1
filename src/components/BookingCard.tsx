@@ -5,9 +5,14 @@ import { Check } from "lucide-react";
 interface BookingCardProps {
   booking: Booking;
   style?: React.CSSProperties;
+  onClick?: () => void;
 }
 
-const BookingCard: React.FC<BookingCardProps> = ({ booking, style }) => {
+const BookingCard: React.FC<BookingCardProps> = ({
+  booking,
+  style,
+  onClick,
+}) => {
   const formatTime = (dateString: string) => {
     const date = new Date(dateString);
     return date
@@ -35,6 +40,7 @@ const BookingCard: React.FC<BookingCardProps> = ({ booking, style }) => {
     <div
       className="absolute rounded-lg p-3 shadow-sm text-sm"
       style={{ backgroundColor: bgColor, ...style }}
+      onClick={onClick}
     >
       <div className="font-semibold text-gray-900 mb-14">{booking.service}</div>
       <div className="text-gray-800 text-xs mb-1">{booking.client}</div>

@@ -10,7 +10,7 @@ const BookingsPage: React.FC = () => {
     <div className="min-h-screen bg-gray-100">
       <div>
         <CalendarHeader />
-        <div className="mt-4">
+        <div>
           <CalendarGrid bookings={bookings} />
         </div>
       </div>
