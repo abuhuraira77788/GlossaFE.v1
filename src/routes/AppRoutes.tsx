@@ -32,7 +32,7 @@ const Layout = () => {
         <Navbar />
         <div
           className={`flex-1 bg-gray-100 ${
-            isBookings ? "pt-0" : "pt-6"
+            isBookings ? "pt-0" : "pt-4"
           } pr-6 pb-6 pl-6 overflow-y-auto`}
         >
           <Routes>
