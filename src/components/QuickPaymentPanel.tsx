@@ -80,8 +80,10 @@ const stylists: Stylist[] = [
 
 export default function QuickPaymentPanel({
   onClose,
+  onProceed,
 }: {
   onClose: () => void;
+  onProceed: () => void;
 }) {
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<number | null>(3);
@@ -198,8 +200,8 @@ export default function QuickPaymentPanel({
           </div>
 
           <button
-            onClick={() => setSidebarMode("quick")}
-            className="w-[280px] bg-[#22C55E] text-white rounded-md py-3 font-extrabold hover:bg-[#16a34a] transition"
+            onClick={onProceed}
+            className="w-[280px] h-[64px] bg-[#22C55E] text-white rounded-lg py-3 font-extrabold hover:bg-[#16a34a] transition"
           >
             PAY NOW
           </button>
