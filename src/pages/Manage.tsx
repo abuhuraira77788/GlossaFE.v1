@@ -1,4 +1,7 @@
-import ComingSoon from "../components/ComingSoon";
+"use client";
 
-const Manage = () => <ComingSoon title="Manage" />;
-export default Manage;
+import ServicesPage from "../pages/manage/ServicesPage";
+
+export default function Manage() {
+  return <ServicesPage />;
+}

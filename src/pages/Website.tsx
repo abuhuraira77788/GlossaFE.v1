@@ -109,7 +109,7 @@ const Website = () => {
             <div className="space-y-4">
               {/* Takeout times */}
               <div className="flex items-center justify-between">
-                <span className="text-[15px] text-gray-700 font-medium">
+                <span className="text-[15px] text-gray-500 font-medium">
                   Takeout times
                 </span>
                 <Select defaultValue="15">
@@ -126,7 +126,7 @@ const Website = () => {
 
               {/* Delivery times */}
               <div className="flex items-center justify-between">
-                <span className="text-[15px] text-gray-700 font-medium">
+                <span className="text-[15px] text-gray-500 font-medium">
                   Delivery times
                 </span>
                 <Select defaultValue="45">
