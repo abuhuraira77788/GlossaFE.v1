@@ -4,8 +4,10 @@ import {
   Route,
   useLocation,
 } from "react-router-dom";
+
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
+import ReportsSubSidebar from "../components/ReportsSubSidebar";
 
 // Pages
 import Dashboard from "../pages/Dashboard";
@@ -17,23 +19,48 @@ import Manage from "../pages/Manage";
 import Customers from "../pages/Customers";
 import Upgrades from "../pages/Upgrades";
 import Settings from "../pages/Settings";
+import CashUpDetail from "../components/CashUpDetail";
+import DailySalesPage from "../pages/reports/DailySalesPage";
+import ManageSubSidebar from "../components/ManageSubSidebar";
 
 // -------------------------------
-// Layout wrapper that uses useLocation
+// Layout wrapper
 // -------------------------------
 const Layout = () => {
   const location = useLocation();
+
   const isBookings = location.pathname.startsWith("/bookings");
+  const isReports =
+    location.pathname.startsWith("/reports") ||
+    location.pathname.startsWith("/cashup");
+  const isDailySales = location.pathname.startsWith("/daily-sales");
+  const isManage = location.pathname.startsWith("/manage");
+  const isServices = location.pathname.startsWith("/services");
 
   return (
     <div className="flex h-screen">
+      {/* Main Sidebar */}
       <Sidebar />
+
+      {/* Sub Sidebar only for Reports */}
+      {(isReports || isDailySales) && <ReportsSubSidebar />}
+
+      {/* Sub Sidebar only for Manage */}
+      {(isManage || isServices) && <ManageSubSidebar />}
+
       <div className="flex flex-col flex-1">
         <Navbar />
+
         <div
-          className={`flex-1 bg-gray-100 ${
-            isBookings ? "pt-0" : "pt-4"
-          } pr-6 pb-6 pl-6 overflow-y-auto`}
+          className={`flex-1 bg-gray-100 overflow-y-auto ${
+            isDailySales || isManage
+              ? "pt-0 pr-0 pb-3 pl-0"
+              : isReports
+              ? "pt-0 pr-3 pb-3 pl-3"
+              : isBookings
+              ? "pt-0 pr-6 pb-6 pl-6"
+              : "pt-4 pr-6 pb-6 pl-6"
+          }`}
         >
           <Routes>
             <Route path="/" element={<Dashboard />} />
@@ -42,6 +69,8 @@ const Layout = () => {
             <Route path="/pos" element={<POS />} />
             <Route path="/website" element={<Website />} />
             <Route path="/reports" element={<Reports />} />
+            <Route path="/cashup/:id" element={<CashUpDetail />} />;
+            <Route path="/daily-sales" element={<DailySalesPage />} />
             <Route path="/manage" element={<Manage />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/upgrades" element={<Upgrades />} />

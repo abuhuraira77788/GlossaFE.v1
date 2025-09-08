@@ -191,7 +191,7 @@ export default function QuickPaymentPanel({
                 <button
                   key={k}
                   onClick={() => handleKey(k)}
-                  className="w-20 h-16 border rounded-md text-[18px] font-semibold text-[#402B69] hover:bg-gray-100 transition flex items-center justify-center"
+                  className="w-20 h-14 border-2 border-gray-200 rounded-md text-[18px] font-semibold text-[#402B69] hover:bg-gray-100 transition flex items-center justify-center"
                 >
                   {k === "del" ? "⌫" : k}
                 </button>

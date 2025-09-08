@@ -106,7 +106,7 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <div className="w-56 h-screen bg-white p-4 flex flex-col justify-between">
+    <div className="w-56 h-screen bg-white p-4 flex flex-col justify-between border-r border-gray-200">
       <nav className="space-y-2">{mainItems.map(renderNavLink)}</nav>
       <div className="mt-auto">{renderNavLink(footerItem)}</div>
     </div>
