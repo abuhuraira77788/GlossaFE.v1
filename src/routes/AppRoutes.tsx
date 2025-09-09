@@ -22,9 +22,11 @@ import Settings from "../pages/Settings";
 import CashUpDetail from "../components/CashUpDetail";
 import DailySalesPage from "../pages/reports/DailySalesPage";
 import ManageSubSidebar from "../components/ManageSubSidebar";
+import Signup from "../pages/auth/signup";
+import Login from "../pages/auth/login";
 
 // -------------------------------
-// Layout wrapper
+// Layout wrapper (for app pages only)
 // -------------------------------
 const Layout = () => {
   const location = useLocation();
@@ -69,7 +71,7 @@ const Layout = () => {
             <Route path="/pos" element={<POS />} />
             <Route path="/website" element={<Website />} />
             <Route path="/reports" element={<Reports />} />
-            <Route path="/cashup/:id" element={<CashUpDetail />} />;
+            <Route path="/cashup/:id" element={<CashUpDetail />} />
             <Route path="/daily-sales" element={<DailySalesPage />} />
             <Route path="/manage" element={<Manage />} />
             <Route path="/customers" element={<Customers />} />
@@ -83,12 +85,19 @@ const Layout = () => {
 };
 
 // -------------------------------
-// Main AppRoutes wrapped in Router
+// Main AppRoutes
 // -------------------------------
 const AppRoutes = () => {
   return (
     <Router>
-      <Layout />
+      <Routes>
+        {/* Auth routes (no sidebar/navbar) */}
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+
+        {/* App routes (with sidebar/navbar via Layout) */}
+        <Route path="/*" element={<Layout />} />
+      </Routes>
     </Router>
   );
 };
