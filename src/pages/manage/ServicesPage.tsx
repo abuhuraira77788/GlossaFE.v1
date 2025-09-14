@@ -7,9 +7,12 @@ import {
   ChevronDown,
   ChevronRight,
 } from "lucide-react";
+// 🔹 later you'll create this component
+import ServiceSidebar from "../../components/service-sidebar";
 
 export default function ServicesPage() {
   const [open, setOpen] = useState(false);
+  const [showServiceSidebar, setShowServiceSidebar] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const [categories] = useState(["Hair Styles", "Colour"]);
   const [activeCategory, setActiveCategory] = useState("Hair Styles");
@@ -47,34 +50,52 @@ export default function ServicesPage() {
         <h1 className="text-[24px] font-semibold text-[#885ABB]">Services</h1>
 
         {/* Add button + dropdown */}
-        <div className="relative group">
-          <button className="bg-[#885ABB] hover:bg-[#6f47a2] text-white px-6 py-3 rounded-lg text-[16px] font-semibold flex items-center gap-2">
+        <div className="relative" ref={dropdownRef}>
+          <button
+            onClick={() => setOpen(!open)}
+            className="bg-[#885ABB] hover:bg-[#6f47a2] text-white px-6 py-3 rounded-lg text-[16px] font-semibold flex items-center gap-2"
+          >
             Add <ChevronDown className="w-4 h-4" strokeWidth={3} />
           </button>
 
-          {/* Dropdown (only shows on hover) */}
-          <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg hidden group-hover:block z-50">
-            <ul className="flex flex-col py-2">
-              <li>
-                <button className="w-full text-left px-6 py-2.5 hover:bg-gray-50 text-[15px]">
-                  Single Service
-                </button>
-              </li>
-              <li>
-                <button className="w-full text-left px-6 py-2.5 hover:bg-gray-50 text-[15px]">
-                  Bundle
-                </button>
-              </li>
-              <li>
-                <button className="w-full text-left px-6 py-2.5 hover:bg-gray-50 text-[15px]">
-                  Category
-                </button>
-              </li>
-            </ul>
-          </div>
+          {/* Dropdown (controlled by open state) */}
+          {open && (
+            <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+              <ul className="flex flex-col py-2">
+                <li>
+                  <button
+                    onClick={() => {
+                      setShowServiceSidebar(true); // 🔹 open sidebar
+                      setOpen(false); // close dropdown
+                    }}
+                    className="w-full text-left px-6 py-2.5 hover:bg-gray-50 text-[15px]"
+                  >
+                    Single Service
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => setOpen(false)}
+                    className="w-full text-left px-6 py-2.5 hover:bg-gray-50 text-[15px]"
+                  >
+                    Bundle
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => setOpen(false)}
+                    className="w-full text-left px-6 py-2.5 hover:bg-gray-50 text-[15px]"
+                  >
+                    Category
+                  </button>
+                </li>
+              </ul>
+            </div>
+          )}
         </div>
       </div>
 
+      {/* Filters / search */}
       <div className="flex items-center gap-3 px-6 py-4 bg-gray-50 w-[90%]">
         {/* Search */}
         <div className="relative w-1/2">
@@ -154,7 +175,7 @@ export default function ServicesPage() {
               All Categories
             </button>
 
-            {/* Other categories (normal style) */}
+            {/* Other categories */}
             {categories.map((cat) => (
               <button
                 key={cat}
@@ -203,6 +224,10 @@ export default function ServicesPage() {
           </div>
         </div>
       </div>
+
+      {showServiceSidebar && (
+        <ServiceSidebar onClose={() => setShowServiceSidebar(false)} />
+      )}
     </div>
   );
 }
