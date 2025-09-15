@@ -24,6 +24,8 @@ import DailySalesPage from "../pages/reports/DailySalesPage";
 import ManageSubSidebar from "../components/ManageSubSidebar";
 import Signup from "../pages/auth/signup";
 import Login from "../pages/auth/login";
+import ConsultationsPage from "../pages/Consultations";
+import FormTemplatesPage from "../pages/FormTemplatePage";
 
 // -------------------------------
 // Layout wrapper (for app pages only)
@@ -71,6 +73,15 @@ const Layout = () => {
             <Route path="/pos" element={<POS />} />
             <Route path="/website" element={<Website />} />
             <Route path="/reports" element={<Reports />} />
+            <Route path="/consultation" element={<ConsultationsPage />} />
+            <Route
+              path="/form-templates"
+              element={
+                <FormTemplatesPage
+                  onNavigateBack={() => window.history.back()}
+                />
+              }
+            />
             <Route path="/cashup/:id" element={<CashUpDetail />} />
             <Route path="/daily-sales" element={<DailySalesPage />} />
             <Route path="/manage" element={<Manage />} />
