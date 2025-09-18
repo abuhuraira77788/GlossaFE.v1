@@ -26,6 +26,7 @@ import Signup from "../pages/auth/signup";
 import Login from "../pages/auth/login";
 import ConsultationsPage from "../pages/Consultations";
 import FormTemplatesPage from "../pages/FormTemplatePage";
+import FormBuilderPage from "../pages/FormBuilderPage";
 
 // -------------------------------
 // Layout wrapper (for app pages only)
@@ -82,6 +83,7 @@ const Layout = () => {
                 />
               }
             />
+            <Route path="/forms/:id/builder" element={<FormBuilderPage />} />
             <Route path="/cashup/:id" element={<CashUpDetail />} />
             <Route path="/daily-sales" element={<DailySalesPage />} />
             <Route path="/manage" element={<Manage />} />

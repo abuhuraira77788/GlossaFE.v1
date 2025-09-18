@@ -1,6 +1,6 @@
 import api from "./api";
 
-//  LOGIN
+// LOGIN
 export const login = async (
   email: string,
   password: string,
@@ -12,21 +12,24 @@ export const login = async (
     remember_me: rememberMe,
   });
 
-  // store token if backend sends it
+  // If backend returns a token, store it
   if (response.data?.token) {
     localStorage.setItem("token", response.data.token);
   }
-
   return response.data;
 };
 
-//  LOGOUT
+// LOGOUT
 export const logout = async () => {
-  await api.post("/logout");
-  localStorage.removeItem("token");
+  try {
+    await api.post("/logout");
+  } catch (e) {
+  } finally {
+    localStorage.removeItem("token");
+  }
 };
 
-//  REGISTER
+// REGISTER
 export const register = async (data: {
   business_name: string;
   subdomain: string;
@@ -42,7 +45,6 @@ export const register = async (data: {
 }) => {
   const response = await api.post("/register", data);
 
-  // store token if backend sends it
   if (response.data?.token) {
     localStorage.setItem("token", response.data.token);
   }

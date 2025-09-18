@@ -72,7 +72,7 @@ const FormTemplatesPage = ({
   );
 
   const handleEditTemplate = (id: number) => {
-    console.log("Edit template:", id);
+    navigate(`/forms/${id}/builder`);
   };
 
   const handleCreateNew = () => {
