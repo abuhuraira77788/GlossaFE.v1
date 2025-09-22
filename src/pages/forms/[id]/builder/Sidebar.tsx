@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { FormTemplate, FormSection } from "../../../../types/forms";
 import { X, Edit2, Trash2, Plus } from "lucide-react";
 import AddSectionModal from "../../../../components/AddSectionModal";
@@ -10,6 +10,8 @@ interface SidebarProps {
   deleteSection: (sectionId: string) => void;
   addSection: (section: FormSection) => void;
   onPreview: () => void;
+  onClose: () => void;
+  completion: number;
 }
 
 export default function Sidebar({
@@ -18,6 +20,8 @@ export default function Sidebar({
   deleteSection,
   addSection,
   onPreview,
+  onClose,
+  completion,
 }: SidebarProps) {
   const [localTitle, setLocalTitle] = useState(template.title);
   const [localDescription, setLocalDescription] = useState(
@@ -33,12 +37,22 @@ export default function Sidebar({
     updateTemplate({ description: localDescription });
   };
 
+  // Progress label refinement
+  const progressLabel = useMemo(() => {
+    if (completion === 0) return "Not started yet";
+    if (completion < 100) return `${completion}% Complete`;
+    return "100% Complete";
+  }, [completion]);
+
   return (
     <div className="p-4 space-y-6 h-full relative">
       {/* Header */}
       <div className="flex justify-between items-center">
         <h2 className="text-lg font-semibold text-[#402B69]">Form Editor</h2>
-        <button className="text-gray-400 hover:text-gray-600 transition-colors p-1">
+        <button
+          onClick={onClose}
+          className="text-gray-400 hover:text-gray-600 transition-colors p-1"
+        >
           <X size={16} />
         </button>
       </div>
@@ -47,9 +61,17 @@ export default function Sidebar({
       <div>
         <p className="text-sm text-gray-600 mb-2">Template Completion</p>
         <div className="w-full bg-gray-200 rounded-full h-2">
-          <div className="bg-[#885ABB] h-2 rounded-full w-[100%] transition-all duration-300"></div>
+          <div
+            className="bg-[#885ABB] h-2 rounded-full transition-all duration-300"
+            style={{ width: `${completion}%` }}
+          ></div>
         </div>
-        <p className="text-xs text-gray-500 mt-1">100% Complete</p>
+        <p className="text-xs text-gray-500 mt-1">{progressLabel}</p>
+        {completion < 100 && (
+          <p className="text-xs text-gray-400 mt-1">
+            Add a title, description, service, or section to increase progress.
+          </p>
+        )}
       </div>
 
       {/* Form Info */}
@@ -96,6 +118,11 @@ export default function Sidebar({
               {service}
             </div>
           ))}
+          {template.services.length === 0 && (
+            <span className="text-xs text-gray-400 italic">
+              No services linked yet
+            </span>
+          )}
         </div>
       </div>
 
@@ -136,6 +163,12 @@ export default function Sidebar({
               </div>
             </div>
           ))}
+
+          {template.sections.length === 0 && (
+            <p className="text-xs text-gray-400 italic">
+              No sections added yet
+            </p>
+          )}
         </div>
 
         {/* Open Modal Button */}
@@ -150,7 +183,14 @@ export default function Sidebar({
 
       {/* Actions */}
       <div className="pt-4 space-y-3 mt-auto">
-        <button className="w-full bg-[#885ABB] text-white py-2.5 rounded-lg hover:bg-[#724a9e] transition-colors font-medium">
+        <button
+          disabled={completion === 0}
+          className={`w-full py-2.5 rounded-lg font-medium transition-colors ${
+            completion === 0
+              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+              : "bg-[#885ABB] text-white hover:bg-[#724a9e]"
+          }`}
+        >
           Save Template
         </button>
         <button

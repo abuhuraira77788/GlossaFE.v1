@@ -2,16 +2,16 @@ import { Edit } from "lucide-react";
 import { Button } from "../components/ui/Button";
 
 interface FormTemplate {
-  id: number;
+  id: string;
   title: string;
   description: string;
-  frequency: string;
-  status: "Published" | "Draft";
+  frequency?: string;
+  status?: "Published" | "Draft";
 }
 
 interface FormTemplatesTableProps {
   templates: FormTemplate[];
-  onEditTemplate: (id: number) => void;
+  onEditTemplate: (id: string) => void;
 }
 
 const FormTemplatesTable = ({

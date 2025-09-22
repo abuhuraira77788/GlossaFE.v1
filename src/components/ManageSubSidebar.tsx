@@ -6,12 +6,13 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const manageLinks = [
-  { id: "services", label: "Services" },
-  { id: "memberships", label: "Memberships" },
-  { id: "products", label: "Products" },
-  { id: "stocktakes", label: "Stocktakes" },
-  { id: "stockorders", label: "Stock Orders" },
-  { id: "suppliers", label: "Suppliers" },
+  { id: "services", label: "Services", path: "/manage/services" },
+  { id: "categories", label: "Categories", path: "/categories" },
+  { id: "memberships", label: "Memberships", path: "/manage/memberships" },
+  { id: "products", label: "Products", path: "/manage/products" },
+  { id: "stocktakes", label: "Stocktakes", path: "/manage/stocktakes" },
+  { id: "stockorders", label: "Stock Orders", path: "/manage/stockorders" },
+  { id: "suppliers", label: "Suppliers", path: "/manage/suppliers" },
 ];
 
 export default function ManageSubSidebar() {
@@ -19,9 +20,13 @@ export default function ManageSubSidebar() {
   const navigate = useNavigate();
   const [activeId, setActiveId] = useState("services");
 
+  // Sync activeId with current pathname
   useEffect(() => {
-    if (location.pathname === "/manage") {
-      setActiveId("services");
+    const current = manageLinks.find((link) =>
+      location.pathname.startsWith(link.path)
+    );
+    if (current) {
+      setActiveId(current.id);
     }
   }, [location.pathname]);
 
@@ -32,7 +37,10 @@ export default function ManageSubSidebar() {
         return (
           <button
             key={item.id}
-            onClick={() => setActiveId(item.id)}
+            onClick={() => {
+              setActiveId(item.id);
+              navigate(item.path);
+            }}
             className={cn(
               "relative flex items-center px-4 py-2 text-[15px] text-left transition-all duration-200 group",
               isActive
