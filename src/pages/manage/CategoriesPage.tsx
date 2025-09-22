@@ -5,11 +5,21 @@ import { Button } from "../../components/ui/Button";
 import CategoriesTable from "../../components/CategoriesTable";
 import CategoryForm from "../../components/CategoriesForm";
 import { Category } from "../../types/categories";
+import QuickPaymentPanel from "../../components/QuickPaymentPanel";
+import PosPaymentStep from "../../components/PosPaymentStep";
+import CreateCategoryLayout from "../../components/CreateCategoryLayout";
 
 export default function CategoriesPage() {
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<Category | null>(null);
 
+  // 🔹 Quick Payment states
+  const [showQuickPaymentPanel, setShowQuickPaymentPanel] = useState(false);
+  const [sidebarMode, setSidebarMode] = useState<"quick" | "paynow" | null>(
+    null
+  );
+
+  // Handlers
   const handleCreateNew = () => {
     setEditing(null);
     setShowForm(true);
@@ -20,41 +30,73 @@ export default function CategoriesPage() {
     setShowForm(true);
   };
 
-  const handleSubmit = async (data: Partial<Category>) => {
-    console.log("Saving category:", data);
-    setShowForm(false);
-    setEditing(null);
+  const handleDelete = (cat: Category) => {
+    alert(`Delete ${cat.name}? (stub handler)`);
   };
 
   return (
-    <div className="p-6">
-      {/* 🔹 Page Header */}
-      <div className="flex items-center justify-between mb-6">
+    <div className="">
+      {/* Header Row */}
+      <div className="bg-white border border-gray-200 -mx-6 -my-6 px-6 py-5 mb-6 flex items-center justify-between">
         <h1 className="text-[22px] font-semibold text-[#885ABB]">Categories</h1>
-        {!showForm && (
-          <Button
-            onClick={handleCreateNew}
-            className="bg-[#885ABB] hover:bg-[#6f47a2] text-white px-6 py-2 rounded-lg font-semibold"
-          >
-            Add Category
-          </Button>
-        )}
+
+        <Button
+          onClick={() => setShowQuickPaymentPanel(true)}
+          size="lg"
+          className="flex-[0.15] bg-[#22C55E] hover:bg-[#16a34a] text-white rounded-xl font-bold flex items-center justify-center gap-2 transition"
+        >
+          <img src="/quick.svg" alt="Quick Payment" className="w-5 h-5" />
+          Quick Payment
+        </Button>
       </div>
 
-      {/* 🔹 Conditional Render */}
+      {/* Main Content */}
       {!showForm ? (
         <CategoriesTable
-          // just pass static data for now
           onEdit={handleEdit}
+          onDelete={handleDelete}
+          onCreateNew={handleCreateNew}
+        />
+      ) : editing ? (
+        // 🔹 Edit mode
+        <CategoryForm
+          initialData={editing}
+          onSubmit={() => setShowForm(false)}
+          onCancel={() => setShowForm(false)}
         />
       ) : (
-        <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
-          <CategoryForm
-            initialData={editing || {}}
-            onSubmit={handleSubmit}
-            onCancel={() => setShowForm(false)}
-          />
-        </div>
+        // 🔹 Create new mode
+        <CreateCategoryLayout onCancel={() => setShowForm(false)} />
+      )}
+
+      {/* 🔹 Quick Payment Panel */}
+      {showQuickPaymentPanel && (
+        <QuickPaymentPanel
+          onClose={() => setShowQuickPaymentPanel(false)}
+          onProceed={() => {
+            setShowQuickPaymentPanel(false);
+            setSidebarMode("quick");
+          }}
+        />
+      )}
+
+      {/* 🔹 Sidebar (POS Payment Flow) */}
+      {sidebarMode && (
+        <PosPaymentStep
+          selectedService={{
+            id: "1",
+            name: "Quick Service",
+            duration: "30 min",
+            price: "£35",
+          }}
+          selectedCustomer="Walk-in"
+          appointmentTime={new Date().toISOString()}
+          tip={0}
+          setTip={() => {}}
+          goToFinalPayment={() => setSidebarMode(null)}
+          onClose={() => setSidebarMode(null)}
+          mode={sidebarMode}
+        />
       )}
     </div>
   );
