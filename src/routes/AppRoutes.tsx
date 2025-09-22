@@ -24,6 +24,10 @@ import DailySalesPage from "../pages/reports/DailySalesPage";
 import ManageSubSidebar from "../components/ManageSubSidebar";
 import Signup from "../pages/auth/signup";
 import Login from "../pages/auth/login";
+import ConsultationsPage from "../pages/Consultations";
+import FormTemplatesPage from "../pages/FormTemplatePage";
+import { AuthProvider, useAuth } from "../auth/AuthContext";
+import CategoriesPage from "../pages/manage/CategoriesPage";
 
 // -------------------------------
 // Layout wrapper (for app pages only)
@@ -38,6 +42,7 @@ const Layout = () => {
   const isDailySales = location.pathname.startsWith("/daily-sales");
   const isManage = location.pathname.startsWith("/manage");
   const isServices = location.pathname.startsWith("/services");
+  const isCategories = location.pathname.startsWith("/categories");
 
   return (
     <div className="flex h-screen">
@@ -48,7 +53,7 @@ const Layout = () => {
       {(isReports || isDailySales) && <ReportsSubSidebar />}
 
       {/* Sub Sidebar only for Manage */}
-      {(isManage || isServices) && <ManageSubSidebar />}
+      {(isManage || isServices || isCategories) && <ManageSubSidebar />}
 
       <div className="flex flex-col flex-1">
         <Navbar />
@@ -71,9 +76,19 @@ const Layout = () => {
             <Route path="/pos" element={<POS />} />
             <Route path="/website" element={<Website />} />
             <Route path="/reports" element={<Reports />} />
+            <Route path="/consultation" element={<ConsultationsPage />} />
+            <Route
+              path="/form-templates"
+              element={
+                <FormTemplatesPage
+                  onNavigateBack={() => window.history.back()}
+                />
+              }
+            />
             <Route path="/cashup/:id" element={<CashUpDetail />} />
             <Route path="/daily-sales" element={<DailySalesPage />} />
             <Route path="/manage" element={<Manage />} />
+            <Route path="/categories" element={<CategoriesPage />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/upgrades" element={<Upgrades />} />
             <Route path="/settings" element={<Settings />} />
@@ -90,14 +105,16 @@ const Layout = () => {
 const AppRoutes = () => {
   return (
     <Router>
-      <Routes>
-        {/* Auth routes (no sidebar/navbar) */}
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
+      <AuthProvider>
+        <Routes>
+          {/* Auth routes (no sidebar/navbar) */}
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
 
-        {/* App routes (with sidebar/navbar via Layout) */}
-        <Route path="/*" element={<Layout />} />
-      </Routes>
+          {/* App routes (with sidebar/navbar via Layout) */}
+          <Route path="/*" element={<Layout />} />
+        </Routes>
+      </AuthProvider>
     </Router>
   );
 };

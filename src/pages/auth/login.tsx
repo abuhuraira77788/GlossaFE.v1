@@ -2,9 +2,11 @@
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { login } from "../../services/auth";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,7 +24,7 @@ export default function Login() {
       const res = await login(email, password, remember);
       console.log("Login success:", res);
 
-      window.location.href = "/dashboard";
+      navigate("/dashboard");
     } catch (err: any) {
       setError(err.response?.data?.message || "Login failed");
     } finally {

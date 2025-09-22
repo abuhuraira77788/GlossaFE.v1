@@ -1,6 +1,6 @@
 import api from "./api";
 
-//  LOGIN
+// LOGIN
 export const login = async (
   email: string,
   password: string,
@@ -11,41 +11,37 @@ export const login = async (
     password,
     remember_me: rememberMe,
   });
+  console.log("🔎 Raw login response:", response.data);
 
-  // store token if backend sends it
-  if (response.data?.token) {
-    localStorage.setItem("token", response.data.token);
-  }
+  const token = response.data?.data?.token;
+  const user = response.data?.data?.user;
 
-  return response.data;
+  console.log("👉 Extracted user in auth.ts:", user);
+
+  if (token) localStorage.setItem("token", token);
+
+  return { token, user };
 };
 
-//  LOGOUT
+// LOGOUT
 export const logout = async () => {
-  await api.post("/logout");
-  localStorage.removeItem("token");
+  try {
+    await api.post("/logout");
+  } finally {
+    localStorage.removeItem("token");
+  }
 };
 
-//  REGISTER
-export const register = async (data: {
-  business_name: string;
-  subdomain: string;
-  calling_code: string;
-  contact: string;
-  address: string;
-  website: string;
-  name: string;
-  business_categories: string;
-  email: string;
-  password: string;
-  password_confirmation: string;
-}) => {
+// REGISTER
+export const register = async (data: any) => {
   const response = await api.post("/register", data);
 
-  // store token if backend sends it
-  if (response.data?.token) {
-    localStorage.setItem("token", response.data.token);
+  const token = response.data?.data?.token;
+  const user = response.data?.data?.user;
+
+  if (token) {
+    localStorage.setItem("token", token);
   }
 
-  return response.data;
+  return { token, user };
 };

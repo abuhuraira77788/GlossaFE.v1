@@ -1,11 +1,11 @@
-import { LayoutGrid } from "lucide-react";
+import { LayoutGrid, MessageSquareText } from "lucide-react";
 import React from "react";
 import { NavLink } from "react-router-dom";
 
 interface SidebarItem {
   id: string;
   label: string;
-  icon: string | React.ElementType; // string for image paths, component for Lucide
+  icon: string | React.ElementType;
   path: string;
 }
 
@@ -35,12 +35,18 @@ const mainItems: SidebarItem[] = [
     icon: "/bars/reports.svg",
     path: "/reports",
   },
-  { id: "manage", label: "Manage", icon: LayoutGrid, path: "/manage" }, // Lucide icon
+  { id: "manage", label: "Manage", icon: LayoutGrid, path: "/manage" },
   {
     id: "customers",
     label: "Customers",
     icon: "/bars/customers.svg",
     path: "/customers",
+  },
+  {
+    id: "consultation",
+    label: "Consultation",
+    icon: MessageSquareText,
+    path: "/consultation",
   },
   {
     id: "upgrades",
