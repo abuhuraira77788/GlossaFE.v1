@@ -28,6 +28,7 @@ import ConsultationsPage from "../pages/Consultations";
 import FormTemplatesPage from "../pages/FormTemplatePage";
 import { AuthProvider, useAuth } from "../auth/AuthContext";
 import CategoriesPage from "../pages/manage/CategoriesPage";
+import ServiceSettings from "../pages/ServiceSettings";
 
 // -------------------------------
 // Layout wrapper (for app pages only)
@@ -89,6 +90,7 @@ const Layout = () => {
             <Route path="/daily-sales" element={<DailySalesPage />} />
             <Route path="/manage" element={<Manage />} />
             <Route path="/categories" element={<CategoriesPage />} />
+            <Route path="/service-settings" element={<ServiceSettings />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/upgrades" element={<Upgrades />} />
             <Route path="/settings" element={<Settings />} />

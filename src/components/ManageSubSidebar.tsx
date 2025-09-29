@@ -7,7 +7,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 const manageLinks = [
   { id: "services", label: "Services", path: "/manage/services" },
-  { id: "categories", label: "Categories", path: "/categories" },
   { id: "memberships", label: "Memberships", path: "/manage/memberships" },
   { id: "products", label: "Products", path: "/manage/products" },
   { id: "stocktakes", label: "Stocktakes", path: "/manage/stocktakes" },
